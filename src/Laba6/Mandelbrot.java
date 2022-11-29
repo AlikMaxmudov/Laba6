@@ -1,0 +1,58 @@
+package Laba6;
+
+import java.awt.geom.Rectangle2D;
+
+/**
+ * Generator of mandelbrot fractal
+ * */
+public class Mandelbrot extends FractalGenerator {
+
+    /**
+     * Максимальное число итераций - 2000, согласно методоичке.
+     * */
+    private static final int MAX_ITERATIONS = 2000;
+
+    /**
+     * начальный инициализация диапозона: (-2 - 1.5i) - (1 + 1.5i)
+     * */
+    @Override
+    public void getInitialRange(Rectangle2D.Double range) {
+        range.x = -2;
+        range.y = -1.5;
+        range.height = 3;
+        range.width = 3;
+    }
+
+    /**
+     * функция Менделброта : z_n = z_{n-1}^2 + c (markdown)
+     * z_0 = 0
+     * |z| < 2^2
+     * z^2 = x^2 + 2xiy - y^2
+     * */
+    @Override
+    public int numIterations(double x, double y) {
+        double currentIY = 0;
+        double currentX = 0;
+        int iterationCount = 0;
+        while (iterationCount < MAX_ITERATIONS) {
+            iterationCount++;
+            double newX = currentX * currentX - currentIY * currentIY + x;
+            double newIY = 2 * currentX * currentIY + y;
+            currentX = newX;
+            currentIY = newIY;
+
+            if (currentX * currentX + currentIY * currentIY > 4)
+                break;
+        }
+        if (iterationCount == MAX_ITERATIONS) {
+            return -1;
+        } else {
+            return iterationCount;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Laba6.Mandelbrot";
+    }
+}
